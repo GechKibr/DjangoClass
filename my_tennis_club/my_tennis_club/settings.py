@@ -25,11 +25,19 @@ SECRET_KEY = "django-insecure-kutmvp*=^+020bb5#81fagd+%jj@!76@rgv@b=$c-$vv)+ya$2
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+
 ALLOWED_HOSTS = [
-    "https://ideal-space-couscous-pjp5g495xj69c7977.github.dev/",
-    # "https://*.github.dev",
-    # "https://localhost:8000",
+    "localhost",
+    "127.0.0.1",
+    ".app.github.dev",   # This is needed for Codespaces URLs
 ]
+
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://*.app.github.dev",
+    "https://localhost:8000",
+]
+
 
 
 # Application definition

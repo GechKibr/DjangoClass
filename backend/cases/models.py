@@ -1,3 +1,4 @@
+import uuid
 from django.db import models
 from django.conf import settings
 
@@ -14,6 +15,8 @@ class Case(models.Model):
 
     title = models.CharField(max_length=255)
     description = models.TextField()
+
+    tracking_id = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
 
     reporter = models.ForeignKey(
         settings.AUTH_USER_MODEL,

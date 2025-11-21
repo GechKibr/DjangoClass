@@ -12,6 +12,12 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 from pathlib import Path
 
+
+import os
+from dotenv import load_dotenv
+load_dotenv()
+
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -25,27 +31,40 @@ SECRET_KEY = "django-insecure-3)nr5c)6p$e5gdz0(d2-1kq1gy!h=m$i*qr0i(7mq8cbz#i7t-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [
-    "*",
-    "localhost",
-    "127.0.0.1",
-    ".app.github.dev",   # This is needed for Codespaces URLs
-]
+
 
 AUTH_USER_MODEL = 'accounts.User'
 CORS_ALLOW_ALL_ORIGINS = True
 
+
+
+
+# CORS & CSRF CONFIG
+CORS_ALLOW_CREDENTIALS = True
+
 CORS_ALLOWED_ORIGINS = [
     "https://ideal-space-couscous-pjp5g495xj69c7977-5173.app.github.dev",
+    "https://ideal-space-couscous-pjp5g495xj69c7977-8000.app.github.dev",
+    "https://*.app.github.dev",
 ]
-
-
 
 CSRF_TRUSTED_ORIGINS = [
-    "https://localhost:8000",
     "https://ideal-space-couscous-pjp5g495xj69c7977-5173.app.github.dev",
+    "https://*.app.github.dev",
+    "https://*.github.dev",
+    "https://ideal-space-couscous-pjp5g495xj69c7977-8000.app.github.dev/",
+     "http://localhost:8000",
+    "https://localhost:8000"
 
 ]
+
+ALLOWED_HOSTS = [
+    "*",
+    "localhost",
+    "127.0.0.1",
+    ".app.github.dev"
+]
+
 
 
 # Application definition
@@ -61,21 +80,25 @@ INSTALLED_APPS = [
     "cases",
     "rest_framework",
     "corsheaders",
+    "dashboard",
+    "api_public",
+    "django_filters",
 ]
+
+
 
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "corsheaders.middleware.CorsMiddleware",
-    "django.middleware.common.CommonMiddleware",
-
 ]
+
 
 ROOT_URLCONF = "backend.urls"
 
@@ -100,12 +123,27 @@ WSGI_APPLICATION = "backend.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
+#    SQLite configuration (commented out)
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
         "NAME": BASE_DIR / "db.sqlite3",
     }
 }
+
+# PostgreSQL configuration
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': os.getenv('PG_NAME'),
+#         'USER': os.getenv('PG_USER'),
+#         'PASSWORD': os.getenv('PG_PASSWORD'),
+#         'HOST': os.getenv('PG_HOST'),
+#         'PORT': os.getenv('PG_PORT'),
+#     }
+# }
+
+
 
 
 # Password validation
@@ -148,3 +186,8 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+
+
+USE_X_FORWARDED_HOST = True
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')

@@ -26,8 +26,11 @@ router.register(r'comments', CommentViewSet)
 router.register(r'attachments', AttachmentViewSet)
 
 urlpatterns = [
-     path('api/', include('cases.urls')),
     path('admin/', admin.site.urls),
+    # Core API endpoints (authenticated users)
     path('api/', include(router.urls)),
+    path('api/accounts/', include('accounts.urls')),
+    path('api/dashboard/', include('dashboard.urls')),
+    # Public API endpoints (no authentication required)
+    path('api/public/', include('api_public.urls')),
 ]
-

@@ -24,9 +24,9 @@ from django.conf.urls.static import static
 from cases.views import CaseViewSet, CommentViewSet, AttachmentViewSet
 
 # Optional: Swagger API Docs
-from rest_framework import permissions
-from drf_yasg.views import get_schema_view
-from drf_yasg import openapi
+# from rest_framework import permissions
+# from drf_yasg.views import get_schema_view
+# from drf_yasg import openapi
 
 # Router configuration
 router = routers.DefaultRouter()
@@ -34,16 +34,6 @@ router.register(r'cases', CaseViewSet, basename='cases')
 router.register(r'comments', CommentViewSet, basename='comments')
 router.register(r'attachments', AttachmentViewSet, basename='attachments')
 
-# Swagger configuration
-schema_view = get_schema_view(
-    openapi.Info(
-        title="Corruption Reporting API",
-        default_version='v1',
-        description="API documentation for the Corruption Reporting & Case Tracking System",
-    ),
-    public=True,
-    permission_classes=[permissions.AllowAny],
-)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -59,10 +49,6 @@ urlpatterns = [
 
     # 🔹 Public API (no authentication required)
     path('api/v1/public/', include('api_public.urls')),
-
-    # 🔹 Swagger / ReDoc documentation
-    path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='swagger'),
-    path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='redoc'),
 ]
 
 # 🔹 Media (Attachments)

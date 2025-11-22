@@ -1,10 +1,12 @@
-from django.urls import path
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+from .views import CaseViewSet, CommentViewSet, AttachmentViewSet
 
-# Cases URLs are handled by the router in backend/urls.py
-# ViewSet endpoints:
-#   /api/cases/ - List and create cases
-#   /api/cases/{id}/ - Retrieve, update, delete case
-#   /api/comments/ - Comment management
-#   /api/attachments/ - Attachment management
+router = DefaultRouter()
+router.register(r'cases', CaseViewSet, basename='cases')
+router.register(r'comments', CommentViewSet, basename='comments')
+router.register(r'attachments', AttachmentViewSet, basename='attachments')
 
-urlpatterns = []
+urlpatterns = [
+    path('', include(router.urls)),
+]

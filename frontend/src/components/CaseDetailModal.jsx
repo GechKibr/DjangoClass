@@ -3,6 +3,7 @@ import { API_BASE } from "../api/api";
 import CommentForm from "./CommentForm";
 import AttachmentList from "./AttachmentList";
 
+
 function CaseDetailModal({ caseData, onClose }) {
   const [comments, setComments] = useState([]);
   const [attachments, setAttachments] = useState([]);

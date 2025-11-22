@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { API_BASE } from "../api/api";
+
 function CommentForm({ caseId, setComments }) {
   const [content, setContent] = useState("");
 

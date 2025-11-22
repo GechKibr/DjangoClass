@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { API_BASE } from "../api/api";
 import CaseDetailModal from "./CaseDetailModal";
 
+
 function CaseList() {
   const [cases, setCases] = useState([]);
   const [loading, setLoading] = useState(false);

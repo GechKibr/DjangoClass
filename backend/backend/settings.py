@@ -84,6 +84,7 @@ INSTALLED_APPS = [
     "api_public",
     "django_filters",
     "rest_framework.authtoken",
+    "rest_framework_simplejwt.token_blacklist",
 ]
 
 
@@ -150,8 +151,10 @@ REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework.authentication.TokenAuthentication",
         "rest_framework.authentication.SessionAuthentication",
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
     ],
     "DEFAULT_PERMISSION_CLASSES": [
+        "rest_framework.permissions.IsAuthenticated",
         "rest_framework.permissions.IsAuthenticated",
     ],
     "DEFAULT_FILTER_BACKENDS": [

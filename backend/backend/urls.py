@@ -20,38 +20,59 @@ from rest_framework import routers
 from django.conf import settings
 from django.conf.urls.static import static
 
-# ViewSets
+
+# -------------------------
+# ViewSets (for DRF router)
+# -------------------------
 from cases.views import CaseViewSet, CommentViewSet, AttachmentViewSet
 
-# Optional: Swagger API Docs
-# from rest_framework import permissions
-# from drf_yasg.views import get_schema_view
-# from drf_yasg import openapi
+# -------------------------
+# Accounts class-based views
+# -------------------------
+from accounts.views import (
+    RegisterUserView, LoginUserView, LogoutUserView, CurrentUserView,
+    UserProfileView, UserProfileDetailView, ChangePasswordView,
+    AdminUserListView, AdminUserDetailView
+)
 
-# Router configuration
+# -------------------------
+# DRF router
+# -------------------------
 router = routers.DefaultRouter()
 router.register(r'cases', CaseViewSet, basename='cases')
 router.register(r'comments', CommentViewSet, basename='comments')
 router.register(r'attachments', AttachmentViewSet, basename='attachments')
-
-
+# router.register(r'register',RegisterUserView, basename='register')
+# -------------------------
+# URL patterns
+# -------------------------
 urlpatterns = [
     path('admin/', admin.site.urls),
+    
+    # API root
 
-    # 🔹 API Version 1
+    # DRF router endpoints
     path('api/v1/', include(router.urls)),
 
-    # 🔹 Accounts (Auth, Registration, Login)
-    path('api/v1/accounts/', include('accounts.urls')),
+    # Accounts endpoints...
+    path('api/v1/accounts/register/', RegisterUserView.as_view(), name='register'),
+    path('api/v1/accounts/login/', LoginUserView.as_view(), name='login'),
+    path('api/v1/accounts/logout/', LogoutUserView.as_view(), name='logout'),
+    path('api/v1/accounts/me/', CurrentUserView.as_view(), name='current-user'),
+    path('api/v1/accounts/profile/', UserProfileView.as_view(), name='user-profile'),
+    path('api/v1/accounts/profile/details/', UserProfileDetailView.as_view(), name='user-profile-detail'),
+    path('api/v1/accounts/change-password/', ChangePasswordView.as_view(), name='change-password'),
+    path('api/v1/accounts/admin/users/', AdminUserListView.as_view(), name='admin-user-list'),
+    path('api/v1/accounts/admin/users/<int:pk>/', AdminUserDetailView.as_view(), name='admin-user-detail'),
 
-    # 🔹 Dashboard (Admin Analytics)
     path('api/v1/dashboard/', include('dashboard.urls')),
-
-    # 🔹 Public API (no authentication required)
     path('api/v1/public/', include('api_public.urls')),
 ]
 
 # 🔹 Media (Attachments)
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+
+
 

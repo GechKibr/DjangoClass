@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Shield, Eye, TrendingUp, ArrowRight, FileText, Search } from "lucide-react";
 import { Link } from "react-router-dom";
-import api from "../../api/api"; // Axios instance
+import api from "../api/api"; // Adjust the import path as necessary    
 import './Home.css';
 
 const Home = () => {

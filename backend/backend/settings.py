@@ -126,12 +126,12 @@ WSGI_APPLICATION = "backend.wsgi.application"
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 #    SQLite configuration (commented out)
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
-    }
-}
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.sqlite3",
+#         "NAME": BASE_DIR / "db.sqlite3",
+#     }
+# }
 
 # PostgreSQL configuration
 # DATABASES = {
@@ -144,6 +144,20 @@ DATABASES = {
 #         'PORT': os.getenv('PG_PORT'),
 #     }
 # }
+
+
+# for my localhost database  postgresql
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'corruption_db',
+        'USER': 'django',
+        'PASSWORD': 'eagle1234',
+        'HOST': 'localhost',
+        'PORT': '5432',
+    }
+}
 
 
 

@@ -42,8 +42,8 @@ const Report = () => {
     const fetchCategories = async () => {
       try {
         // TODO: Replace with your actual API endpoint
-        const response = await axios.get('http:localhost:8000/api/v1/cases/categories/');
-        setCategories(response.data);
+        // const response = await axios.get('http:localhost:8000/api/v1/cases/categories/');
+        // setCategories(response.data);
         
         // Mock data for demonstration
         setTimeout(() => {

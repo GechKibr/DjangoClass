@@ -1,11 +1,20 @@
 import React, { useState, useEffect } from "react";
 import { 
-  Shield, Eye, TrendingUp, ArrowRight, FileText, Search, Users,
-  Clock, CheckCircle, AlertTriangle, BarChart3, Lock
+  Shield, 
+  Eye, 
+  TrendingUp, 
+  ArrowRight, 
+  FileText, 
+  Search,
+  Users,
+  Clock,
+  CheckCircle,
+  AlertTriangle,
+  BarChart3,
+  Lock
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import api from "../api/api";
-import CountUp from "react-countup";
 
 const Home = () => {
   const [stats, setStats] = useState({
@@ -33,6 +42,7 @@ const Home = () => {
         setLoading(false);
       }
     };
+
     fetchStats();
   }, []);
 
@@ -64,27 +74,25 @@ const Home = () => {
   ];
 
   const StatCard = ({ icon, value, label, color, loading }) => (
-    <div className={`p-6 rounded-2xl shadow-lg transition-all duration-500 bg-gradient-to-br from-${color}-50 to-${color}-100 hover:from-${color}-100 hover:to-${color}-200`}>
+    <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-blue-200 group">
       <div className="flex items-center justify-between mb-4">
-        <div className={`p-3 rounded-xl bg-white/20`}>
+        <div className={`p-3 rounded-xl bg-${color}-50 group-hover:bg-${color}-100 transition-colors`}>
           {icon}
         </div>
         {loading ? (
           <div className="h-8 w-20 bg-gray-200 rounded-lg animate-pulse"></div>
         ) : (
-          <div className={`text-4xl font-bold text-${color}-700`}>
-            <CountUp end={value} duration={1.5} separator="," />
-          </div>
+          <div className={`text-4xl font-bold text-${color}-600`}>{value}</div>
         )}
       </div>
-      <div className="text-gray-700 font-medium">{label}</div>
+      <div className="text-gray-600 font-medium">{label}</div>
     </div>
   );
 
   const FeatureCard = ({ feature, index }) => (
     <div 
-      className={`bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 group cursor-pointer transform hover:-translate-y-3 border-l-4 border-transparent hover:border-${feature.color}-500 animate-fadeIn`}
-      style={{ animationDelay: `${index * 150}ms` }}
+      className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-blue-200 group cursor-pointer transform hover:-translate-y-2"
+      style={{ animationDelay: `${index * 100}ms` }}
     >
       <div className={`mb-6 p-4 rounded-2xl bg-${feature.color}-50 group-hover:bg-${feature.color}-100 inline-flex transition-colors`}>
         <div className={`text-${feature.color}-600`}>{feature.icon}</div>
@@ -99,11 +107,7 @@ const Home = () => {
   );
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 relative overflow-hidden">
-      {/* Background shapes */}
-      <div className="absolute -top-20 -left-10 w-80 h-80 bg-purple-300/20 rounded-full blur-3xl animate-pulse-slow"></div>
-      <div className="absolute -bottom-20 -right-10 w-96 h-96 bg-blue-300/20 rounded-full blur-3xl animate-pulse-slow"></div>
-
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50">
       {/* Hero Section */}
       <section className="relative overflow-hidden bg-gradient-to-r from-blue-600 to-purple-700">
         <div className="absolute inset-0 bg-black/10"></div>
@@ -132,7 +136,7 @@ const Home = () => {
               <div className="flex flex-col sm:flex-row gap-4">
                 <Link
                   to="/report"
-                  className="group bg-gradient-to-r from-blue-500 to-purple-500 text-white px-8 py-4 rounded-xl font-semibold hover:scale-105 hover:shadow-xl transition-transform duration-300 flex items-center justify-center"
+                  className="group bg-white text-blue-600 px-8 py-4 rounded-xl font-semibold hover:bg-gray-50 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl flex items-center justify-center"
                 >
                   <FileText className="mr-3 w-5 h-5" />
                   Report Corruption Now
@@ -155,19 +159,30 @@ const Home = () => {
 
             <div className="relative">
               <div className="grid grid-cols-2 gap-6">
-                {/* Floating hero cards */}
-                {[
-                  { icon: <Shield className="w-8 h-8 text-white mb-3" />, title: "Complete Anonymity", text: "Your identity remains protected throughout the process", rotate: "rotate-3", mt: "mt-0" },
-                  { icon: <Eye className="w-8 h-8 text-white mb-3" />, title: "Real-time Updates", text: "Track your case progress with live status updates", rotate: "-rotate-2", mt: "mt-8" },
-                  { icon: <TrendingUp className="w-8 h-8 text-white mb-3" />, title: "Make Impact", text: "Join thousands creating meaningful change", rotate: "rotate-2", mt: "mt-0" },
-                  { icon: <Users className="w-8 h-8 text-white mb-3" />, title: "Community Trust", text: "Built on transparency and public accountability", rotate: "-rotate-3", mt: "mt-8" }
-                ].map((card, i) => (
-                  <div key={i} className={`bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20 transform ${card.rotate} hover:rotate-0 transition-transform duration-500 hover:scale-105 ${card.mt}`}>
-                    {card.icon}
-                    <h3 className="text-white font-semibold mb-2">{card.title}</h3>
-                    <p className="text-blue-100 text-sm">{card.text}</p>
-                  </div>
-                ))}
+                {/* Floating cards */}
+                <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20 transform rotate-3 hover:rotate-0 transition-transform duration-300">
+                  <Shield className="w-8 h-8 text-white mb-3" />
+                  <h3 className="text-white font-semibold mb-2">Complete Anonymity</h3>
+                  <p className="text-blue-100 text-sm">Your identity remains protected throughout the process</p>
+                </div>
+                
+                <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20 transform -rotate-2 hover:rotate-0 transition-transform duration-300 mt-8">
+                  <Eye className="w-8 h-8 text-white mb-3" />
+                  <h3 className="text-white font-semibold mb-2">Real-time Updates</h3>
+                  <p className="text-blue-100 text-sm">Track your case progress with live status updates</p>
+                </div>
+                
+                <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20 transform rotate-2 hover:rotate-0 transition-transform duration-300">
+                  <TrendingUp className="w-8 h-8 text-white mb-3" />
+                  <h3 className="text-white font-semibold mb-2">Make Impact</h3>
+                  <p className="text-blue-100 text-sm">Join thousands creating meaningful change</p>
+                </div>
+                
+                <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20 transform -rotate-3 hover:rotate-0 transition-transform duration-300 mt-8">
+                  <Users className="w-8 h-8 text-white mb-3" />
+                  <h3 className="text-white font-semibold mb-2">Community Trust</h3>
+                  <p className="text-blue-100 text-sm">Built on transparency and public accountability</p>
+                </div>
               </div>
             </div>
           </div>
@@ -186,32 +201,32 @@ const Home = () => {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             <StatCard
               icon={<FileText className="w-6 h-6 text-blue-600" />}
-              value={stats.totalReports}
+              value={loading ? "..." : stats.totalReports.toLocaleString()}
               label="Reports Submitted"
               color="blue"
               loading={loading}
             />
             <StatCard
               icon={<CheckCircle className="w-6 h-6 text-green-600" />}
-              value={stats.resolvedCases}
+              value={loading ? "..." : stats.resolvedCases.toLocaleString()}
               label="Cases Resolved"
               color="green"
               loading={loading}
             />
             <StatCard
               icon={<BarChart3 className="w-6 h-6 text-purple-600" />}
-              value={stats.activeInvestigations}
+              value={loading ? "..." : stats.activeInvestigations}
               label="Active Investigations"
               color="purple"
               loading={loading}
             />
             <StatCard
               icon={<Clock className="w-6 h-6 text-yellow-600" />}
-              value={stats.averageResponseTime}
-              label="Avg Response Time (h)"
+              value={loading ? "..." : `${stats.averageResponseTime}h`}
+              label="Average Response Time"
               color="yellow"
               loading={loading}
             />
@@ -252,7 +267,7 @@ const Home = () => {
           <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
             <Link
               to="/report"
-              className="group bg-gradient-to-r from-blue-500 to-purple-500 text-white px-10 py-5 rounded-2xl font-bold text-lg hover:scale-105 hover:shadow-2xl transition-transform duration-300 flex items-center"
+              className="group bg-white text-blue-600 px-10 py-5 rounded-2xl font-bold text-lg hover:bg-gray-50 transition-all duration-300 transform hover:scale-105 shadow-2xl hover:shadow-2xl flex items-center"
             >
               <FileText className="mr-3 w-6 h-6" />
               Report Corruption Now

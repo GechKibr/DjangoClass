@@ -99,6 +99,7 @@ class PublicCaseStatusSerializer(serializers.ModelSerializer):
             'tracking_id',
             'status',
             'title',
+            'description',
             'severity',
             'created_at',
             'updated_at',

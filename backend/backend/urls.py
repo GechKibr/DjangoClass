@@ -65,8 +65,8 @@ urlpatterns = [
     path('api/v1/accounts/admin/users/', AdminUserListView.as_view(), name='admin-user-list'),
     path('api/v1/accounts/admin/users/<int:pk>/', AdminUserDetailView.as_view(), name='admin-user-detail'),
 
-    path('api/v1/dashboard/', include('dashboard.urls')),
-    path('api/v1/public/', include('api_public.urls')),
+    path('api/v1/dashboard/', include('dashboard.urls')),   # Dashboard app URLs have  4 endpoints
+    path('api/v1/public/', include('api_public.urls')),   # Public API app URLs have 3 endpoints
 ]
 
 # 🔹 Media (Attachments)

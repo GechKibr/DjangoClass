@@ -8,16 +8,16 @@ class AttachmentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Attachment
         fields = [
-            'id',
-            'case',
-            'file',
-            'mime_type',
-            'file_hash',
-            'uploader',
-            'uploader_name',
-            'uploaded_at',
+            "id",
+            "case",
+            "file",
+            "mime_type",
+            "file_hash",
+            "uploader",
+            "uploader_name",
+            "uploaded_at",
         ]
-        read_only_fields = ['uploader', 'uploaded_at']
+        read_only_fields = ["uploader", "uploaded_at"]
 
 
 class CommentSerializer(serializers.ModelSerializer):
@@ -26,15 +26,15 @@ class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
         fields = [
-            'id',
-            'case',
-            'author',
-            'author_name',
-            'content',
-            'visibility',
-            'created_at',
+            "id",
+            "case",
+            "author",
+            "author_name",
+            "content",
+            "visibility",
+            "created_at",
         ]
-        read_only_fields = ['author', 'created_at']
+        read_only_fields = ["author", "created_at"]
 
 
 class CaseSerializer(serializers.ModelSerializer):
@@ -47,27 +47,31 @@ class CaseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Case
         fields = [
-            'id',
-            'tracking_id',
-            'title',
-            'description',
-            'reporter',
-            'reporter_name',
-            'is_anonymous',
-            'status',
-            'severity',
-            'location',
-            'assigned_to',
-            'assigned_to_name',
+            "id",
+            "tracking_id",
+            "title",
+            "description",
 
-            'created_at',
-            'updated_at',
+            "reporter",
+            "reporter_name",
+            "is_anonymous",
 
-            'comments',
-            'attachments',
+            "status",
+            "severity",
+            "location",
+
+            "assigned_to",
+            "assigned_to_name",
+
+            "created_at",
+            "updated_at",
+
+            "comments",
+            "attachments",
         ]
+
         read_only_fields = [
-            'tracking_id',
-            'created_at',
-            'updated_at',
+            "tracking_id",
+            "created_at",
+            "updated_at",
         ]

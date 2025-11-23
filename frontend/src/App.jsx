@@ -7,7 +7,7 @@ import './App.css';
 function App() {
   return (
     <Router>
-      <div className="App">
+      <div>
         <Routes>
           <Route path="/" element={<Home />} />
           {/* Add other routes later */}
@@ -23,3 +23,4 @@ function App() {
 }
 
 export default App;
+

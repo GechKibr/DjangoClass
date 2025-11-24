@@ -30,6 +30,54 @@ class SoftDeleteModel(models.Model):
         abstract = True
 
 
+class Category(TimeStampedModel, SoftDeleteModel):
+    """Category for corruption cases"""
+    
+    name = models.CharField(max_length=100, unique=True)
+    description = models.TextField(blank=True, null=True)
+    is_active = models.BooleanField(default=True)
+    
+    class Meta:
+        verbose_name_plural = "Categories"
+        ordering = ['name']
+    
+    def __str__(self):
+        return self.name
+
+
+# ---------------------------
+# InvolvedParty Model (MOVE THIS BEFORE Case)
+# ---------------------------
+
+class InvolvedParty(TimeStampedModel):
+    """Model to track parties involved in corruption cases"""
+    
+    PARTY_TYPES = [
+        ('government_office', 'Government Office'),
+        ('public_official', 'Public Official'),
+        ('private_company', 'Private Company'),
+        ('individual', 'Individual'),
+        ('other', 'Other'),
+    ]
+    
+    # Use string reference to avoid circular dependency
+    case = models.ForeignKey(
+        'Case',  # Use string reference instead of direct class
+        on_delete=models.CASCADE, 
+        related_name="involved_parties"
+    )
+    party_type = models.CharField(max_length=50, choices=PARTY_TYPES)
+    name = models.CharField(max_length=255)
+    position = models.CharField(max_length=255, blank=True, null=True)
+    department = models.CharField(max_length=255, blank=True, null=True)
+    
+    class Meta:
+        verbose_name_plural = "Involved parties"
+    
+    def __str__(self):
+        return f"{self.name} ({self.get_party_type_display()})"
+
+
 # ---------------------------
 # Main Case Model
 # ---------------------------
@@ -104,7 +152,14 @@ class Case(TimeStampedModel, SoftDeleteModel):
         null=True,
         blank=True
     )
-
+    category = models.ForeignKey(
+        Category,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="cases"
+    )
+    
     # ---------------------------
     # String Representation
     # ---------------------------

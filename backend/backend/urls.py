@@ -24,7 +24,9 @@ from django.conf.urls.static import static
 # -------------------------
 # ViewSets (for DRF router)
 # -------------------------
-from cases.views import CaseViewSet, CommentViewSet, AttachmentViewSet
+from cases.views import (
+    CaseViewSet, CommentViewSet, AttachmentViewSet,
+    CategoryViewSet,PublicCategoryViewSet)
 
 # -------------------------
 # Accounts class-based views
@@ -42,7 +44,8 @@ router = routers.DefaultRouter()
 router.register(r'cases', CaseViewSet, basename='cases')
 router.register(r'comments', CommentViewSet, basename='comments')
 router.register(r'attachments', AttachmentViewSet, basename='attachments')
-# router.register(r'register',RegisterUserView, basename='register')
+router.register(r'categories', CategoryViewSet)
+router.register(r'public/categories', PublicCategoryViewSet, basename='public-categories')
 # -------------------------
 # URL patterns
 # -------------------------

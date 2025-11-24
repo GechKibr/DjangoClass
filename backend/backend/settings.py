@@ -43,26 +43,20 @@ CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
 
 CORS_ALLOWED_ORIGINS = [
-    "https://ideal-space-couscous-pjp5g495xj69c7977-5173.app.github.dev",
-    "https://ideal-space-couscous-pjp5g495xj69c7977-8000.app.github.dev",
-    "https://*.app.github.dev",
+    "https://7b527c1e-7d5e-433a-8740-0f04ec8143d1-00-3cs6hem46d233.spock.replit.dev",
+    "https://*.replit.dev",
 ]
 
 CSRF_TRUSTED_ORIGINS = [
-    "https://ideal-space-couscous-pjp5g495xj69c7977-5173.app.github.dev",
-    "https://*.app.github.dev",
-    "https://*.github.dev",
-    "https://ideal-space-couscous-pjp5g495xj69c7977-8000.app.github.dev/",
-     "http://localhost:8000",
-    "https://localhost:8000"
-
+    "https://7b527c1e-7d5e-433a-8740-0f04ec8143d1-00-3cs6hem46d233.spock.replit.dev",
+    "https://*.replit.dev",
 ]
 
 ALLOWED_HOSTS = [
     "*",
     "localhost",
     "127.0.0.1",
-    ".app.github.dev"
+    ".replit.dev"
 ]
 
 

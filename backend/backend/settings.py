@@ -12,15 +12,13 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 from pathlib import Path
 
-
 import os
 from dotenv import load_dotenv
-load_dotenv()
 
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
@@ -31,25 +29,18 @@ SECRET_KEY = "django-insecure-3)nr5c)6p$e5gdz0(d2-1kq1gy!h=m$i*qr0i(7mq8cbz#i7t-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-
-
 AUTH_USER_MODEL = 'accounts.User'
 CORS_ALLOW_ALL_ORIGINS = True
 
-
-
-
 # CORS & CSRF CONFIG
 CORS_ALLOW_CREDENTIALS = True
-
 CORS_ALLOWED_ORIGINS = [
-    "https://ideal-space-couscous-pjp5g495xj69c7977-5173.app.github.dev",
-    "https://ideal-space-couscous-pjp5g495xj69c7977-8000.app.github.dev",
-    "https://*.app.github.dev",
+    "https://7b527c1e-7d5e-433a-8740-0f04ec8143d1-00-3cs6hem46d233.spock.replit.dev",
+    "https://*.replit.dev",
+    "http://localhost:8000",
 ]
 
 CSRF_TRUSTED_ORIGINS = [
-    "http://127.0.0.1"
     "https://ideal-space-couscous-pjp5g495xj69c7977-5173.app.github.dev",
     "https://*.app.github.dev",
     "https://*.github.dev",
@@ -60,14 +51,17 @@ CSRF_TRUSTED_ORIGINS = [
 ]
 
 ALLOWED_HOSTS = [
-    "*",
-    "localhost",
-    "127.0.0.1",
-    ".app.github.dev"
+    '7b527c1e-7d5e-433a-8740-0f04ec8143d1-00-3cs6hem46d233.spock.replit.dev',
+    'localhost',
+    '127.0.0.1',
+    '.replit.dev',
+    '.repl.co',
 ]
 
-
-
+CSRF_COOKIE_SECURE = True
+CSRF_COOKIE_SAMESITE = 'None'
+SESSION_COOKIE_SECURE = True
+SESSION_COOKIE_SAMESITE = 'None'
 # Application definition
 
 INSTALLED_APPS = [
@@ -88,9 +82,6 @@ INSTALLED_APPS = [
     "rest_framework_simplejwt.token_blacklist",
 ]
 
-
-
-
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -101,7 +92,6 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
-
 
 ROOT_URLCONF = "backend.urls"
 
@@ -121,7 +111,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "backend.wsgi.application"
-
 
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
@@ -146,7 +135,6 @@ DATABASES = {
 #     }
 # }
 
-
 # for my localhost database  postgresql
 
 # DATABASES = {
@@ -154,13 +142,11 @@ DATABASES = {
 #         'ENGINE': 'django.db.backends.postgresql',
 #         'NAME': 'corruption_db',
 #         'USER': 'django',
-#         'PASSWORD': 'eagle1234',
+#         'PASSWORD': 'password',
 #         'HOST': 'localhost',
 #         'PORT': '5432',
 #     }
 # }
-
-
 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
@@ -182,26 +168,27 @@ REST_FRAMEWORK = {
     ],
 }
 
-
-
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
+        "NAME":
+        "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
     },
     {
-        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
+        "NAME":
+        "django.contrib.auth.password_validation.MinimumLengthValidator",
     },
     {
-        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
+        "NAME":
+        "django.contrib.auth.password_validation.CommonPasswordValidator",
     },
     {
-        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
+        "NAME":
+        "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
 ]
-
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/
@@ -214,7 +201,6 @@ USE_I18N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
@@ -225,15 +211,8 @@ STATIC_URL = "static/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-
-
 USE_X_FORWARDED_HOST = True
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-
-
-
-
-import os
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

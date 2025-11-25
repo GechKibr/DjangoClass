@@ -1,1 +1,45 @@
+# Python
+*.py[cod]
+__pycache__/
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+.Python
+.pythonlibs/
+*.sqlite3
+db.sqlite3
 .env
+.venv
+venv/
+ENV/
+myworld/
+
+# Django
+*.log
+local_settings.py
+media/
+staticfiles/
+
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# Build outputs
+frontend/dist/
+frontend/build/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db

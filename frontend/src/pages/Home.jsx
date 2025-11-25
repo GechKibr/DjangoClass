@@ -31,9 +31,9 @@ const Home = () => {
         const response = await api.get("public/stats/");
         const data = response.data;
         setStats({
-          totalReports: data.total_reports || 0,
-          resolvedCases: data.resolved_cases || 0,
-          activeInvestigations: data.active_investigations || 0,
+          totalReports: data.total_cases || 0,
+          resolvedCases: data.closed_cases || 0,
+          activeInvestigations: data.open_cases || 0,
           averageResponseTime: data.average_response_time || 0,
         });
         setLoading(false);

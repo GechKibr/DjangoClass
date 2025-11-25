@@ -15,7 +15,9 @@ import {
   Calendar,
   Building,
   X,
-  Loader2
+  Loader2,
+  Plus,
+  Users
 } from 'lucide-react';
 import axios from 'axios';
 
@@ -27,6 +29,10 @@ const Report = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
   const [caseId, setCaseId] = useState('');
+  const [loadingCategories, setLoadingCategories] = useState(true);
+  const [involvedParties, setInvolvedParties] = useState([
+    { party_type: 'government_office', name: '', position: '', department: '' }
+  ]);
 
   const {
     register,
@@ -41,24 +47,23 @@ const Report = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        // TODO: Replace with your actual API endpoint
-        const response = await axios.get('http://127.0.0.1:8000/api/v1/cases/');
+        setLoadingCategories(true);
+        const response = await axios.get('http://localhost:8000/api/v1/public/categories/');
         setCategories(response.data);
-        
-        // Mock data for demonstration
-        setTimeout(() => {
-          setCategories([
-            { id: 1, name: 'Bribery' },
-            { id: 2, name: 'Embezzlement' },
-            { id: 3, name: 'Nepotism' },
-            { id: 4, name: 'Fraud' },
-            { id: 5, name: 'Extortion' },
-            { id: 6, name: 'Abuse of Power' },
-            { id: 7, name: 'Other' }
-          ]);
-        }, 500);
       } catch (error) {
         console.error('Error fetching categories:', error);
+        // Fallback categories if API fails
+        setCategories([
+          { id: 1, name: 'Bribery' },
+          { id: 2, name: 'Embezzlement' },
+          { id: 3, name: 'Nepotism' },
+          { id: 4, name: 'Fraud' },
+          { id: 5, name: 'Extortion' },
+          { id: 6, name: 'Abuse of Power' },
+          { id: 7, name: 'Other' }
+        ]);
+      } finally {
+        setLoadingCategories(false);
       }
     };
 
@@ -91,12 +96,40 @@ const Report = () => {
     setUploadedFiles(prev => prev.filter((_, i) => i !== index));
   };
 
+  // Involved Parties Functions
+  const addInvolvedParty = () => {
+    setInvolvedParties(prev => [
+      ...prev,
+      { party_type: 'government_office', name: '', position: '', department: '' }
+    ]);
+  };
+
+  const removeInvolvedParty = (index) => {
+    if (involvedParties.length > 1) {
+      setInvolvedParties(prev => prev.filter((_, i) => i !== index));
+    }
+  };
+
+  const updateInvolvedParty = (index, field, value) => {
+    setInvolvedParties(prev => 
+      prev.map((party, i) => 
+        i === index ? { ...party, [field]: value } : party
+      )
+    );
+  };
+
   const nextStep = async () => {
     let isValid = false;
 
     switch (step) {
       case 1:
-        isValid = await trigger(['title', 'description', 'datetime', 'location', 'category', 'government_office']);
+        isValid = await trigger(['title', 'description', 'datetime', 'location', 'category']);
+        // Validate involved parties
+        const partiesValid = involvedParties.every(party => party.name.trim() !== '');
+        if (!partiesValid) {
+          alert('Please fill in all involved party names');
+          return;
+        }
         break;
       case 2:
         isValid = true;
@@ -127,38 +160,33 @@ const Report = () => {
     try {
       const formData = new FormData();
       
+      // Append basic case data
       Object.keys(data).forEach(key => {
         if (data[key]) {
           formData.append(key, data[key]);
         }
       });
       
-      formData.append('anonymous', isAnonymous);
+      formData.append('is_anonymous', isAnonymous);
       
+      // Append involved parties as JSON
+      formData.append('involved_parties', JSON.stringify(involvedParties));
+      
+      // Append files
       uploadedFiles.forEach(file => {
         formData.append('evidence_files', file);
       });
 
-      // TODO: Replace with your actual API endpoint
-      const response = await axios.post('http://localhost:8000/api/v1/cases', formData, {
+      // Submit to backend
+      const response = await axios.post('http://127.0.0.1:8000/api/v1/cases/', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
 
-      setTimeout(() => {
-        const mockResponse = {
-          data: {
-            id: 'CR-' + Math.random().toString(36).substr(2, 9).toUpperCase(),
-            ...data,
-            anonymous: isAnonymous
-          }
-        };
-        
-        setCaseId(mockResponse.data.id);
-        setSubmitSuccess(true);
-        setIsSubmitting(false);
-      }, 2000);
+      setCaseId(response.data.tracking_id);
+      setSubmitSuccess(true);
+      setIsSubmitting(false);
 
     } catch (error) {
       console.error('Error submitting report:', error);
@@ -312,11 +340,15 @@ const Report = () => {
                     }`}
                   >
                     <option value="">Select a category</option>
-                    {categories.map(cat => (
-                      <option key={cat.id} value={cat.id}>
-                        {cat.name}
-                      </option>
-                    ))}
+                    {loadingCategories ? (
+                      <option>Loading categories...</option>
+                    ) : (
+                      categories.map(cat => (
+                        <option key={cat.id} value={cat.id}>
+                          {cat.name}
+                        </option>
+                      ))
+                    )}
                   </select>
                   {errors.category && (
                     <p className="text-red-600 text-sm mt-1">{errors.category.message}</p>
@@ -365,27 +397,6 @@ const Report = () => {
                 </div>
 
                 <div className="md:col-span-2 space-y-2">
-                  <label htmlFor="government_office" className="block text-sm font-medium text-gray-700">
-                    Government Office/Individual Involved *
-                  </label>
-                  <div className="relative">
-                    <Building className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-                    <input
-                      id="government_office"
-                      type="text"
-                      placeholder="Name of office or individual involved"
-                      {...register('government_office', { required: 'This field is required' })}
-                      className={`w-full pl-12 pr-4 py-3 border rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 ${
-                        errors.government_office ? 'border-red-500' : 'border-gray-300'
-                      }`}
-                    />
-                  </div>
-                  {errors.government_office && (
-                    <p className="text-red-600 text-sm mt-1">{errors.government_office.message}</p>
-                  )}
-                </div>
-
-                <div className="md:col-span-2 space-y-2">
                   <label htmlFor="description" className="block text-sm font-medium text-gray-700">
                     Detailed Description *
                   </label>
@@ -404,6 +415,101 @@ const Report = () => {
                   {errors.description && (
                     <p className="text-red-600 text-sm mt-1">{errors.description.message}</p>
                   )}
+                </div>
+              </div>
+
+              {/* Involved Parties Section */}
+              <div className="border-t pt-8">
+                <div className="flex items-center justify-between mb-6">
+                  <div className="flex items-center space-x-3">
+                    <Users className="w-6 h-6 text-blue-600" />
+                    <h3 className="text-xl font-semibold text-gray-900">Involved Parties</h3>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={addInvolvedParty}
+                    className="flex items-center space-x-2 bg-blue-600 text-white px-4 py-2 rounded-xl hover:bg-blue-700 transition-colors duration-200"
+                  >
+                    <Plus className="w-4 h-4" />
+                    <span>Add Party</span>
+                  </button>
+                </div>
+
+                <div className="space-y-6">
+                  {involvedParties.map((party, index) => (
+                    <div key={index} className="bg-gray-50 rounded-2xl p-6">
+                      <div className="flex items-center justify-between mb-4">
+                        <h4 className="font-semibold text-gray-900">Party {index + 1}</h4>
+                        {involvedParties.length > 1 && (
+                          <button
+                            type="button"
+                            onClick={() => removeInvolvedParty(index)}
+                            className="text-red-500 hover:text-red-700 transition-colors duration-200"
+                          >
+                            <X className="w-5 h-5" />
+                          </button>
+                        )}
+                      </div>
+
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="space-y-2">
+                          <label className="block text-sm font-medium text-gray-700">
+                            Party Type *
+                          </label>
+                          <select
+                            value={party.party_type}
+                            onChange={(e) => updateInvolvedParty(index, 'party_type', e.target.value)}
+                            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                          >
+                            <option value="government_office">Government Office</option>
+                            <option value="public_official">Public Official</option>
+                            <option value="private_company">Private Company</option>
+                            <option value="individual">Individual</option>
+                            <option value="other">Other</option>
+                          </select>
+                        </div>
+
+                        <div className="space-y-2">
+                          <label className="block text-sm font-medium text-gray-700">
+                            Name *
+                          </label>
+                          <input
+                            type="text"
+                            placeholder="Enter name or office"
+                            value={party.name}
+                            onChange={(e) => updateInvolvedParty(index, 'name', e.target.value)}
+                            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                          />
+                        </div>
+
+                        <div className="space-y-2">
+                          <label className="block text-sm font-medium text-gray-700">
+                            Position
+                          </label>
+                          <input
+                            type="text"
+                            placeholder="Position or role"
+                            value={party.position}
+                            onChange={(e) => updateInvolvedParty(index, 'position', e.target.value)}
+                            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                          />
+                        </div>
+
+                        <div className="space-y-2">
+                          <label className="block text-sm font-medium text-gray-700">
+                            Department
+                          </label>
+                          <input
+                            type="text"
+                            placeholder="Department or organization"
+                            value={party.department}
+                            onChange={(e) => updateInvolvedParty(index, 'department', e.target.value)}
+                            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
@@ -611,13 +717,42 @@ const Report = () => {
                       <p className="text-gray-900 mt-1">{watch('location')}</p>
                     </div>
                     <div className="md:col-span-2">
-                      <strong className="text-gray-700">Office/Individual:</strong>
-                      <p className="text-gray-900 mt-1">{watch('government_office')}</p>
-                    </div>
-                    <div className="md:col-span-2">
                       <strong className="text-gray-700">Description:</strong>
                       <p className="text-gray-900 mt-1 whitespace-pre-wrap">{watch('description')}</p>
                     </div>
+                  </div>
+                </div>
+
+                <div>
+                  <h3 className="text-xl font-semibold text-gray-900 mb-4">Involved Parties</h3>
+                  <div className="space-y-4">
+                    {involvedParties.map((party, index) => (
+                      <div key={index} className="bg-gray-50 rounded-2xl p-6">
+                        <h4 className="font-semibold text-gray-900 mb-3">Party {index + 1}</h4>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div>
+                            <strong className="text-gray-700">Type:</strong>
+                            <p className="text-gray-900 mt-1 capitalize">{party.party_type.replace('_', ' ')}</p>
+                          </div>
+                          <div>
+                            <strong className="text-gray-700">Name:</strong>
+                            <p className="text-gray-900 mt-1">{party.name}</p>
+                          </div>
+                          {party.position && (
+                            <div>
+                              <strong className="text-gray-700">Position:</strong>
+                              <p className="text-gray-900 mt-1">{party.position}</p>
+                            </div>
+                          )}
+                          {party.department && (
+                            <div>
+                              <strong className="text-gray-700">Department:</strong>
+                              <p className="text-gray-900 mt-1">{party.department}</p>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    ))}
                   </div>
                 </div>
 

@@ -34,7 +34,6 @@ CORS_ALLOW_ALL_ORIGINS = True
 
 # CORS & CSRF CONFIG
 CORS_ALLOW_CREDENTIALS = True
-CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOWED_ORIGINS = [
     "https://7b527c1e-7d5e-433a-8740-0f04ec8143d1-00-3cs6hem46d233.spock.replit.dev",
     "https://*.replit.dev",
@@ -43,12 +42,24 @@ CORS_ALLOWED_ORIGINS = [
 
 CSRF_TRUSTED_ORIGINS = [
     "https://7b527c1e-7d5e-433a-8740-0f04ec8143d1-00-3cs6hem46d233.spock.replit.dev",
+    "https://7b527c1e-7d5e-433a-8740-0f04ec8143d1-00-3cs6hem46d233.spock.replit.dev:8000",
     "https://*.replit.dev",
     "https://*.repl.co",
+    "http://localhost:8000",
 ]
 
-ALLOWED_HOSTS = ["*", "localhost", "127.0.0.1", ".replit.dev"]
+ALLOWED_HOSTS = [
+    '7b527c1e-7d5e-433a-8740-0f04ec8143d1-00-3cs6hem46d233.spock.replit.dev',
+    'localhost',
+    '127.0.0.1',
+    '.replit.dev',
+    '.repl.co',
+]
 
+CSRF_COOKIE_SECURE = True
+CSRF_COOKIE_SAMESITE = 'None'
+SESSION_COOKIE_SECURE = True
+SESSION_COOKIE_SAMESITE = 'None'
 # Application definition
 
 INSTALLED_APPS = [

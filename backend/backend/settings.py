@@ -38,6 +38,7 @@ CORS_ALLOWED_ORIGINS = [
     "https://7b527c1e-7d5e-433a-8740-0f04ec8143d1-00-3cs6hem46d233.spock.replit.dev",
     "https://*.replit.dev",
     "http://localhost:8000",
+    "https://7b527c1e-7d5e-433a-8740-0f04ec8143d1-00-3cs6hem46d233.spock.replit.dev:8000",
 ]
 
 CSRF_TRUSTED_ORIGINS = [
@@ -45,9 +46,9 @@ CSRF_TRUSTED_ORIGINS = [
     "https://*.app.github.dev",
     "https://*.github.dev",
     "https://ideal-space-couscous-pjp5g495xj69c7977-8000.app.github.dev/",
-     "http://localhost:8000",
-    "https://localhost:8000"
-
+    "http://localhost:8000",
+    "http://127.0.0.1",
+    "https://7b527c1e-7d5e-433a-8740-0f04ec8143d1-00-3cs6hem46d233.spock.replit.dev:8000",
 ]
 
 ALLOWED_HOSTS = [
@@ -56,12 +57,13 @@ ALLOWED_HOSTS = [
     '127.0.0.1',
     '.replit.dev',
     '.repl.co',
+    "https://7b527c1e-7d5e-433a-8740-0f04ec8143d1-00-3cs6hem46d233.spock.replit.dev:8000",
 ]
 
 CSRF_COOKIE_SECURE = True
-CSRF_COOKIE_SAMESITE = 'None'
+# CSRF_COOKIE_SAMESITE = 'None'
 SESSION_COOKIE_SECURE = True
-SESSION_COOKIE_SAMESITE = 'None'
+# SESSION_COOKIE_SAMESITE = 'None'
 # Application definition
 
 INSTALLED_APPS = [

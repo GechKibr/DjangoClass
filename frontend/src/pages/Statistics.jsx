@@ -64,7 +64,7 @@ const Statistics = () => {
         }
 
         const data = await Promise.all(
-          responses.map((response) => response.json()),
+          responses.map((response) => response.json())
         );
 
         setSummaryData(data[0]);

@@ -6,6 +6,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import Report from "./pages/Report";
 import TrackCasePage from "./pages/TrackCasePage";
+import Statistics from "./pages/Statistics";
 const App = () => {
   return (
     <Router>
@@ -18,6 +19,8 @@ const App = () => {
           {/* Report Page */}
           <Route path="/report" element={<Report />} />
 
+          
+          <Route path="/statistics" element={<Statistics />}  
           {/* Extra routes if you plan later */}
           {/* { <Route path="/track-case" element={<TrackCase />} /> } */}
             {/* {trackcase page} */}
@@ -30,22 +33,3 @@ const App = () => {
 };
 
 export default App;
-
-
-
-
-// import { Routes, Route } from "react-router-dom";
-// import Home from "./pages/Home";
-// import Report from "./pages/Report";
-// function App() {
-//   return (
-//     <>
-//       <Routes>
-//         <Route path="/" element={<Home />} />
-//         <Route path="/report" element={<Report />} />
-//       </Routes>
-//     </>
-//   );
-// }
-
-// export default App;

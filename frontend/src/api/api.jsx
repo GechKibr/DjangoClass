@@ -1,8 +1,9 @@
 import axios from "axios";
 
-// const REPLIT_DEV_DOMAIN = "7b527c1e-7d5e-433a-8740-0f04ec8143d1-00-3cs6hem46d233.spock.replit.dev";
-const REPLIT_DEV_DOMAIN = "127.0.0.1:8000";
-const API_BASE_URL = `http://${REPLIT_DEV_DOMAIN}/api/v1/`;
+const REPLIT_DEV_DOMAIN =
+  "7b527c1e-7d5e-433a-8740-0f04ec8143d1-00-3cs6hem46d233.spock.replit.dev:8000";
+// const REPLIT_DEV_DOMAIN = "127.0.0.1:8000";
+const API_BASE_URL = `https://${REPLIT_DEV_DOMAIN}/api/v1/`;
 
 const api = axios.create({
   baseURL: API_BASE_URL,
@@ -12,7 +13,7 @@ const api = axios.create({
 });
 
 // Add token automatically if exists
-api.interceptors.request.use(config => {
+api.interceptors.request.use((config) => {
   const token = localStorage.getItem("access_token");
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;

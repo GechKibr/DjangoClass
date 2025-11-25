@@ -49,6 +49,7 @@ CORS_ALLOWED_ORIGINS = [
 ]
 
 CSRF_TRUSTED_ORIGINS = [
+    "http://127.0.0.1"
     "https://ideal-space-couscous-pjp5g495xj69c7977-5173.app.github.dev",
     "https://*.app.github.dev",
     "https://*.github.dev",

@@ -31,7 +31,6 @@ export default function TrackCasePage() {
 
     try {
       const response = await fetch(
-        // `http://127.0.0.1:8000/api/v1/public/cases/track/${caseId}`,
         `https://7b527c1e-7d5e-433a-8740-0f04ec8143d1-00-3cs6hem46d233.spock.replit.dev:8000/api/v1/public/cases/track/${caseId}`,
       );
 

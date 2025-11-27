@@ -56,7 +56,6 @@ ALLOWED_HOSTS = [
     "127.0.0.1",
 ]
 
-
 CSRF_COOKIE_SECURE = True
 # CSRF_COOKIE_SAMESITE = 'None'
 SESSION_COOKIE_SECURE = True
@@ -131,19 +130,6 @@ DATABASES = {
 #         'PASSWORD': os.getenv('PG_PASSWORD'),
 #         'HOST': os.getenv('PG_HOST'),
 #         'PORT': os.getenv('PG_PORT'),
-#     }
-# }
-
-# for my localhost database  postgresql
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'corruption_db',
-#         'USER': 'django',
-#         'PASSWORD': 'password',
-#         'HOST': 'localhost',
-#         'PORT': '5432',
 #     }
 # }
 

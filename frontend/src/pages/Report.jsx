@@ -234,10 +234,7 @@ const Report = () => {
 
       console.log("Submitting case data:", caseData);
 
-      const caseResponse = await api.post(
-        "/public/cases/create/",
-        caseData,
-      );
+      const caseResponse = await api.post("/public/cases/create/", caseData);
 
       const createdCase = caseResponse.data;
       setCaseId(createdCase.tracking_id);
@@ -253,15 +250,11 @@ const Report = () => {
         formData.append("case", createdCase.id);
 
         try {
-          await api.post(
-            "/public/attachments/",
-            formData,
-            {
-              headers: {
-                "Content-Type": "multipart/form-data",
-              },
+          await api.post("/public/attachments/", formData, {
+            headers: {
+              "Content-Type": "multipart/form-data",
             },
-          );
+          });
         } catch (attachmentError) {
           console.error("Error uploading attachments:", attachmentError);
           // Don't fail the whole submission if attachments fail

@@ -3,7 +3,10 @@ import { useState } from "react";
 const statusConfig = {
   received: { color: "bg-gray-500", textColor: "text-gray-800" },
   "under review": { color: "bg-yellow-500", textColor: "text-yellow-800" },
-  "investigation in progress": { color: "bg-blue-500", textColor: "text-blue-800" },
+  "investigation in progress": {
+    color: "bg-blue-500",
+    textColor: "text-blue-800",
+  },
   resolved: { color: "bg-green-500", textColor: "text-green-800" },
   closed: { color: "bg-purple-500", textColor: "text-purple-800" },
   rejected: { color: "bg-red-500", textColor: "text-red-800" },
@@ -28,7 +31,8 @@ export default function TrackCasePage() {
 
     try {
       const response = await fetch(
-        `http://127.0.0.1:8000/api/v1/public/cases/track/${caseId}`
+        // `http://127.0.0.1:8000/api/v1/public/cases/track/${caseId}`,
+        `https://7b527c1e-7d5e-433a-8740-0f04ec8143d1-00-3cs6hem46d233.spock.replit.dev:8000/api/v1/public/cases/track/${caseId}`,
       );
 
       if (!response.ok) {
@@ -74,7 +78,6 @@ export default function TrackCasePage() {
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-4">
       <div className="max-w-3xl mx-auto">
-
         {/* Header */}
         <div className="text-center mb-10">
           <h1 className="text-3xl font-bold text-gray-900">Track Your Case</h1>
@@ -113,11 +116,12 @@ export default function TrackCasePage() {
         {/* Case Data */}
         {caseData && (
           <div className="bg-white p-6 shadow rounded-lg space-y-6">
-
             {/* Header */}
             <div className="flex justify-between items-center">
               <div>
-                <h2 className="text-xl font-bold">{caseData.title || "No Title"}</h2>
+                <h2 className="text-xl font-bold">
+                  {caseData.title || "No Title"}
+                </h2>
                 <p className="text-gray-600">
                   Tracking ID: {caseData.tracking_id}
                 </p>
@@ -164,9 +168,7 @@ export default function TrackCasePage() {
                       <p className="text-sm text-gray-500">
                         {formatDate(h.timestamp)}
                       </p>
-                      {h.note && (
-                        <p className="text-gray-700 mt-1">{h.note}</p>
-                      )}
+                      {h.note && <p className="text-gray-700 mt-1">{h.note}</p>}
                     </div>
                   ))}
                 </div>
@@ -174,29 +176,30 @@ export default function TrackCasePage() {
             )}
 
             {/* Public Messages */}
-            {caseData.public_messages && caseData.public_messages.length > 0 && (
-              <div>
-                <h3 className="font-semibold text-gray-900 mb-4">
-                  Messages From Investigation Team
-                </h3>
-                <div className="space-y-4">
-                  {caseData.public_messages.map((msg) => (
-                    <div
-                      key={msg.id}
-                      className="border-l-4 border-blue-600 pl-4 py-2"
-                    >
-                      <div className="flex justify-between">
-                        <span className="font-medium">{msg.from}</span>
-                        <span className="text-sm text-gray-500">
-                          {formatDate(msg.timestamp)}
-                        </span>
+            {caseData.public_messages &&
+              caseData.public_messages.length > 0 && (
+                <div>
+                  <h3 className="font-semibold text-gray-900 mb-4">
+                    Messages From Investigation Team
+                  </h3>
+                  <div className="space-y-4">
+                    {caseData.public_messages.map((msg) => (
+                      <div
+                        key={msg.id}
+                        className="border-l-4 border-blue-600 pl-4 py-2"
+                      >
+                        <div className="flex justify-between">
+                          <span className="font-medium">{msg.from}</span>
+                          <span className="text-sm text-gray-500">
+                            {formatDate(msg.timestamp)}
+                          </span>
+                        </div>
+                        <p className="text-gray-700 mt-1">{msg.message}</p>
                       </div>
-                      <p className="text-gray-700 mt-1">{msg.message}</p>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
           </div>
         )}
       </div>

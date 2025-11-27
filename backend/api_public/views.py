@@ -1,8 +1,9 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import permissions, status
+from rest_framework.parsers import MultiPartParser, FormParser
 from django.db.models import Count
-from cases.models import Case
+from cases.models import Case, Category, Attachment
 
 from .serializers import (
     PublicCaseSerializer,
@@ -25,7 +26,8 @@ class PublicCaseCreateView(APIView):
             return Response(
                 {
                     "message": "Case submitted successfully",
-                    "tracking_id": case.tracking_id,
+                    "id": case.id,
+                    "tracking_id": str(case.tracking_id),
                     "case": PublicCaseDetailSerializer(case).data
                 },
                 status=status.HTTP_201_CREATED
@@ -90,3 +92,57 @@ class PublicStatsView(APIView):
             "by_severity": Case.objects.values("severity").annotate(total=Count("severity")),
         }
         return Response(stats)
+
+
+class PublicCategoryListView(APIView):
+    """
+    List all active categories for public case submission.
+    """
+    permission_classes = [permissions.AllowAny]
+
+    def get(self, request):
+        categories = Category.objects.filter(is_active=True, is_deleted=False).order_by('name')
+        data = [{"id": cat.id, "name": cat.name, "description": cat.description} for cat in categories]
+        return Response(data)
+
+
+class PublicAttachmentUploadView(APIView):
+    """
+    Public users upload attachments for their cases.
+    """
+    permission_classes = [permissions.AllowAny]
+    parser_classes = [MultiPartParser, FormParser]
+
+    def post(self, request):
+        case_id = request.data.get('case')
+        files = request.FILES.getlist('files')
+        
+        if not case_id:
+            return Response({"error": "case field is required"}, status=status.HTTP_400_BAD_REQUEST)
+        
+        if not files:
+            return Response({"error": "No files provided"}, status=status.HTTP_400_BAD_REQUEST)
+        
+        try:
+            case = Case.objects.get(pk=case_id, is_deleted=False)
+        except Case.DoesNotExist:
+            return Response({"error": "Case not found"}, status=status.HTTP_404_NOT_FOUND)
+        
+        attachments = []
+        for file in files:
+            attachment = Attachment.objects.create(
+                case=case,
+                uploader=None,  # Public submission has no authenticated user
+                file=file,
+                mime_type=file.content_type
+            )
+            attachments.append({
+                "id": attachment.id,
+                "filename": attachment.file.name,
+                "mime_type": attachment.mime_type
+            })
+        
+        return Response({
+            "message": f"{len(files)} file(s) uploaded successfully",
+            "attachments": attachments
+        }, status=status.HTTP_201_CREATED)

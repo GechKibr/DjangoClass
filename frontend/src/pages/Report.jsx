@@ -20,7 +20,6 @@ import {
   AlertCircle,
   Loader2,
 } from "lucide-react";
-import axios from "axios";
 
 const Report = () => {
   const [step, setStep] = useState(1);
@@ -235,8 +234,8 @@ const Report = () => {
 
       console.log("Submitting case data:", caseData);
 
-      const caseResponse = await axios.post(
-        "http://127.0.0.1:8000/api/v1/cases/",
+      const caseResponse = await api.post(
+        "/public/cases/create/",
         caseData,
       );
 
@@ -254,8 +253,8 @@ const Report = () => {
         formData.append("case", createdCase.id);
 
         try {
-          await axios.post(
-            "http://127.0.0.1:8000/api/v1/attachments/",
+          await api.post(
+            "/public/attachments/",
             formData,
             {
               headers: {

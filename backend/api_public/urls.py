@@ -5,11 +5,22 @@ from .views import (
     PublicCaseCreateView,
     PublicCaseStatusView,
     PublicStatsView,
+    PublicCategoryListView,
+    PublicAttachmentUploadView,
 )
 
 app_name = "api_public"
 
 urlpatterns = [
+    # ----------------------------------------------------
+    # Public Categories
+    # ----------------------------------------------------
+    path(
+        'categories/',
+        PublicCategoryListView.as_view(),
+        name='public-category-list'
+    ),
+
     # ----------------------------------------------------
     # Public Case Submission + Listing
     # ----------------------------------------------------
@@ -41,6 +52,15 @@ urlpatterns = [
         'cases/track/<str:tracking_id>/',
         PublicCaseStatusView.as_view(),
         name='public-case-status'
+    ),
+
+    # ----------------------------------------------------
+    # Public Attachments Upload
+    # ----------------------------------------------------
+    path(
+        'attachments/',
+        PublicAttachmentUploadView.as_view(),
+        name='public-attachment-upload'
     ),
 
     # ----------------------------------------------------

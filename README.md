@@ -5,8 +5,8 @@ Corruption Reporting & Case Tracking System
 
 A modern web-based platform designed to make corruption reporting easier, more transparent, and traceable. The system allows citizens, employees, or whistleblowers to submit reports, upload evidence, and track the progress of their cases — while authorized officers manage, investigate, and resolve each report efficiently.
 
-             Features
-For Reporters
+                                  Features
+         For Reporters
 
 Submit corruption cases anonymously or with full identity
 
@@ -16,7 +16,7 @@ Track the real-time status of submitted cases
 
 Receive notifications on case updates
 
-For Investigators / Officers
+         For Investigators / Officers
 
 View and manage assigned corruption reports
 
@@ -26,7 +26,7 @@ Add comments, request additional evidence
 
 Generate analytics and reports
 
-   For Administrators
+      For Administrators
 
 Manage users, roles, and permissions
 
@@ -36,7 +36,7 @@ Review system activity logs
 
 Manage evidence storage and security
 
-  System Architecture
+         System Architecture
 
 Backend: Django + Django REST Framework
 
@@ -47,8 +47,8 @@ Database: PostgreSQL / MySQL / or cloud-based DB
 Authentication: JWT or Session-based
 
 File Storage: Local or cloud (S3, Cloudinary, etc.)
-    
-     Core Modules
+           
+        Core Modules
 
 User Management
 
@@ -64,7 +64,7 @@ Notifications
 
 Analytics Dashboard
    
-    Installation (Backend)
+          Installation (Backend)
 git clone <repo-url>
 
 cd backend
@@ -73,12 +73,12 @@ pip install -r requirements.txt
 python manage.py migrate
 python manage.py runserver
 
-  API Endpoints (Sample)
+        API Endpoints (Sample)
 /api/cases/          → List & Create cases
 /api/comments/       → Comment on cases
 /api/attachments/    → Upload & view evidence
 /api/auth/           → Authentication routes
 
-     Project Goal
+           Project Goal
 
 This system is built to support transparent governance, reduce manual paperwork, and give citizens a reliable platform to fight corruption through secure and trackable reporting.

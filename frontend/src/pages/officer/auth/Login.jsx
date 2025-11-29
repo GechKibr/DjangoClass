@@ -1,38 +1,46 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import api from "../../../services/api";
+import { useState, useEffect } from "react";
+import { useNavigate, useLocation, Link } from "react-router-dom";
+import { useAuth } from "../../../context/AuthContext";
+import { Shield, Eye, EyeOff, ArrowLeft } from "lucide-react";
 
 function LoginPage() {
   const [formData, setFormData] = useState({ username: "", password: "" });
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
+  const { login, isAuthenticated, isOfficer } = useAuth();
+
+  // Redirect if already authenticated
+  useEffect(() => {
+    if (isAuthenticated && isOfficer()) {
+      const from = location.state?.from?.pathname || "/officer/dashboard";
+      navigate(from, { replace: true });
+    }
+  }, [isAuthenticated, isOfficer, navigate, location]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
     setError("");
 
-    try {
-      const response = await api.post("/api/v1/accounts/login/", formData);
-      localStorage.setItem("token", response.data.access); // Assuming JWT
-      localStorage.setItem("refresh_token", response.data.refresh);
+    const result = await login(formData.username, formData.password);
 
-      // Get user data and redirect
-      const userResponse = await api.get("/api/v1/accounts/me/", {
-        headers: { Authorization: `Bearer ${response.data.access}` },
-      });
-
-      localStorage.setItem("user", JSON.stringify(userResponse.data));
-      navigate("/officer/dashboard");
-    } catch (err) {
-      setError(
-        err.response?.data?.detail || "Invalid credentials. Please try again.",
-      );
-    } finally {
-      setIsLoading(false);
+    if (result.success) {
+      // Check if user is an officer type
+      const officerTypes = ["admin", "case_manager", "investigator", "analyst"];
+      if (officerTypes.includes(result.user.user_type)) {
+        const from = location.state?.from?.pathname || "/officer/dashboard";
+        navigate(from, { replace: true });
+      } else {
+        setError("Access denied. This portal is for authorized officers only.");
+      }
+    } else {
+      setError(result.error);
     }
+
+    setIsLoading(false);
   };
 
   return (
@@ -40,6 +48,7 @@ function LoginPage() {
       <div className="max-w-md w-full bg-white rounded-2xl shadow-xl overflow-hidden">
         {/* Header Section */}
         <div className="bg-indigo-600 px-6 py-8 text-center">
+          <Shield className="w-16 h-16 text-white mx-auto mb-4" />
           <h1 className="text-3xl font-bold text-white mb-2">
             Anti-Corruption Portal
           </h1>
@@ -85,18 +94,31 @@ function LoginPage() {
               >
                 Password
               </label>
-              <input
-                id="password"
-                type="password"
-                required
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors duration-200"
-                placeholder="Enter your password"
-                value={formData.password}
-                onChange={(e) =>
-                  setFormData({ ...formData, password: e.target.value })
-                }
-                disabled={isLoading}
-              />
+              <div className="relative">
+                <input
+                  id="password"
+                  type={showPassword ? "text" : "password"}
+                  required
+                  className="w-full px-4 py-3 pr-12 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors duration-200"
+                  placeholder="Enter your password"
+                  value={formData.password}
+                  onChange={(e) =>
+                    setFormData({ ...formData, password: e.target.value })
+                  }
+                  disabled={isLoading}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                >
+                  {showPassword ? (
+                    <EyeOff className="w-5 h-5" />
+                  ) : (
+                    <Eye className="w-5 h-5" />
+                  )}
+                </button>
+              </div>
             </div>
 
             {/* Error Message */}
@@ -141,6 +163,17 @@ function LoginPage() {
               )}
             </button>
           </form>
+
+          {/* Back to Home */}
+          <div className="mt-6 text-center">
+            <Link
+              to="/"
+              className="inline-flex items-center text-sm text-indigo-600 hover:text-indigo-800"
+            >
+              <ArrowLeft className="w-4 h-4 mr-1" />
+              Back to Public Portal
+            </Link>
+          </div>
 
           {/* Security Notice */}
           <div className="mt-8 p-4 bg-blue-50 rounded-lg border border-blue-200">

@@ -206,3 +206,16 @@ class AdminUserDetailView(APIView):
         return Response({'message': 'User deleted successfully'}, status=status.HTTP_204_NO_CONTENT)
 
 
+# -------------------------
+# Officers List (For case assignment)
+# -------------------------
+class OfficersListView(APIView):
+    """List officers for case assignment - accessible by authenticated staff"""
+    permission_classes = [permissions.IsAuthenticated]
+    renderer_classes = [JSONRenderer, BrowsableAPIRenderer]
+
+    def get(self, request):
+        officer_types = ['admin', 'case_manager', 'investigator', 'analyst']
+        officers = User.objects.filter(user_type__in=officer_types, is_active=True)
+        return Response(UserSerializer(officers, many=True).data)
+

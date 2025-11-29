@@ -24,7 +24,7 @@ from django.conf.urls.static import static
 # ViewSets (for DRF router)
 # -------------------------
 from cases.views import (CaseViewSet, CommentViewSet, AttachmentViewSet,
-                         CategoryViewSet, PublicCategoryViewSet)
+                         CategoryViewSet, PublicCategoryViewSet, InvolvedPartyViewSet)
 
 # -------------------------
 # Accounts class-based views
@@ -32,7 +32,7 @@ from cases.views import (CaseViewSet, CommentViewSet, AttachmentViewSet,
 from accounts.views import (RegisterUserView, LoginUserView, LogoutUserView,
                             CurrentUserView, UserProfileView,
                             UserProfileDetailView, ChangePasswordView,
-                            AdminUserListView, AdminUserDetailView)
+                            AdminUserListView, AdminUserDetailView, OfficersListView)
 
 # -------------------------
 # DRF router
@@ -42,6 +42,7 @@ router.register(r'cases', CaseViewSet, basename='cases')
 router.register(r'comments', CommentViewSet, basename='comments')
 router.register(r'attachments', AttachmentViewSet, basename='attachments')
 router.register(r'categories', CategoryViewSet)
+router.register(r'involved-parties', InvolvedPartyViewSet, basename='involved-parties')
 router.register(r'public/categories',
                 PublicCategoryViewSet,
                 basename='public-categories')
@@ -79,6 +80,9 @@ urlpatterns = [
     path('api/v1/accounts/admin/users/<int:pk>/',
          AdminUserDetailView.as_view(),
          name='admin-user-detail'),
+    path('api/v1/accounts/officers/',
+         OfficersListView.as_view(),
+         name='officers-list'),
     path('api/v1/dashboard/',
          include('dashboard.urls')),  # Dashboard app URLs have  4 endpoints
     path('api/v1/public/',

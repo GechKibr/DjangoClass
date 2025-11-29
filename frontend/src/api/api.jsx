@@ -1,7 +1,9 @@
 import axios from "axios";
 
 // Use environment variable or default to localhost for development
-const API_BASE_URL = import.meta.env.VITE_API_URL || "http://127.0.0.1:8000/api/v1/";
+const API_BASE_URL =
+  import.meta.env.VITE_API_URL ||
+  "https://7b527c1e-7d5e-433a-8740-0f04ec8143d1-00-3cs6hem46d233.spock.replit.dev:8000/api/v1";
 
 const api = axios.create({
   baseURL: API_BASE_URL,
@@ -33,9 +35,12 @@ api.interceptors.response.use(
         const refreshToken = localStorage.getItem("refresh_token");
         if (refreshToken) {
           // Try to refresh the token
-          const response = await axios.post(`${API_BASE_URL}accounts/token/refresh/`, {
-            refresh: refreshToken,
-          });
+          const response = await axios.post(
+            `${API_BASE_URL}accounts/token/refresh/`,
+            {
+              refresh: refreshToken,
+            },
+          );
 
           const newAccessToken = response.data.access;
           localStorage.setItem("access_token", newAccessToken);
@@ -54,7 +59,7 @@ api.interceptors.response.use(
     }
 
     return Promise.reject(error);
-  }
+  },
 );
 
 export default api;

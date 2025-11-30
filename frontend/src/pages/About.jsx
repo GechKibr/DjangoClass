@@ -1,46 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-
 const About = () => {
-  const teamMembers = [
-    {
-      name: "Student Name 1",
-      id: "UGR/1234/12",
-      role: "Full Stack Developer",
-      responsibilities: [
-        "Backend Development",
-        "Database Design",
-        "API Integration",
-      ],
-    },
-    {
-      name: "Student Name 2",
-      id: "UGR/1235/12",
-      role: "Frontend Developer",
-      responsibilities: [
-        "UI/UX Design",
-        "React Development",
-        "State Management",
-      ],
-    },
-    {
-      name: "Student Name 3",
-      id: "UGR/1236/12",
-      role: "Full Stack Developer",
-      responsibilities: ["System Architecture", "Testing", "Documentation"],
-    },
-    {
-      name: "Student Name 4",
-      id: "UGR/1237/12",
-      role: "Project Manager",
-      responsibilities: [
-        "Project Planning",
-        "Coordination",
-        "Quality Assurance",
-      ],
-    },
-  ];
-
   const technologies = [
     {
       category: "Frontend",
@@ -190,51 +150,6 @@ const About = () => {
             </div>
           </div>
 
-          {/* Team Section */}
-          <div className="mb-16">
-            <h3 className="text-3xl font-bold text-center text-gray-900 mb-8">
-              Project Team
-            </h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {teamMembers.map((member, index) => (
-                <div
-                  key={index}
-                  className="bg-white rounded-lg shadow-md p-6 text-center"
-                >
-                  <div className="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <span className="text-2xl text-blue-600 font-bold">
-                      {member.name
-                        .split(" ")
-                        .map((n) => n[0])
-                        .join("")}
-                    </span>
-                  </div>
-                  <h4 className="text-xl font-semibold text-gray-900 mb-1">
-                    {member.name}
-                  </h4>
-                  <p className="text-blue-600 mb-2">{member.id}</p>
-                  <p className="text-gray-500 mb-4">{member.role}</p>
-                  <div className="text-left">
-                    <h5 className="font-semibold text-gray-700 mb-2">
-                      Responsibilities:
-                    </h5>
-                    <ul className="space-y-1">
-                      {member.responsibilities.map((resp, respIndex) => (
-                        <li
-                          key={respIndex}
-                          className="text-sm text-gray-600 flex items-start"
-                        >
-                          <span className="text-blue-500 mr-2">•</span>
-                          {resp}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
           {/* University Information */}
           <div className="bg-blue-50 rounded-lg p-8 mb-12">
             <div className="text-center">
@@ -247,7 +162,7 @@ const About = () => {
               <p className="text-gray-600">
                 Final Year Project - Bachelor of Science in Computer Science
               </p>
-              <p className="text-gray-600 mt-2">Academic Year: 2023/2024</p>
+              <p className="text-gray-600 mt-2">Academic Year: November 2025</p>
             </div>
           </div>
 

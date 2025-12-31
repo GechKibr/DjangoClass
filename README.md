@@ -1,7 +1,7 @@
 
-# -DjangoClass
+# Corruption Reporting & Case Tracking System
 
-Corruption Reporting & Case Tracking System
+
 
 A modern web-based platform designed to make corruption reporting easier, more transparent, and traceable. The system allows citizens, employees, or whistleblowers to submit reports, upload evidence, and track the progress of their cases — while authorized officers manage, investigate, and resolve each report efficiently.
 
